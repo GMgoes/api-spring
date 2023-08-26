@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name="Employee")
@@ -15,9 +16,10 @@ public class Employee {
     @Column(name="id", nullable = false)
     private Long id;
 
+    @NotBlank(message = "O nome não pode estar vazio")
     @Column(name = "name", length = 60, nullable = false)
     private String name;
-
+    @NotBlank(message = "A profissão não pode estar vazia")
     @Column(name = "role", length = 35)
     private String role;
 

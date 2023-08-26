@@ -7,6 +7,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name="Game")
@@ -17,12 +18,13 @@ public class Game {
     @Column(name="id", nullable = false)
     private Long id;
 
+    @NotBlank(message = "O nome não pode estar vazio")
     @Column(name = "name", unique = true, length = 30)
     private String name;
 
     @Enumerated(EnumType.STRING)
     private Console console_name;
-
+    @NotBlank(message = "O nome do proprietário não pode estar vazio")
     @Column(name = "owner_name", unique = true, length = 50)
     private String owner_name;
 
