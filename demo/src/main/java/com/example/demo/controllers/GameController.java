@@ -2,8 +2,7 @@ package com.example.demo.controllers;
 
 import java.util.List;
 import com.example.demo.models.Game;
-import com.example.demo.repository.GameRepository;
-
+import com.example.demo.services.GameService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,44 +14,34 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class GameController {
 
-    private final GameRepository repository;
+    private final GameService gameService;
 
-    public GameController(GameRepository repository){
-        this.repository = repository;
+    public GameController(GameService gameService) {
+        this.gameService = gameService;
     }
 
     @GetMapping("/games")
-    public List<Game> allEmployees(){
-        return repository.findAll();
+    public List<Game> allGames() {
+        return gameService.getAllGames();
     }
 
     @PostMapping("/games")
-    public Game newEmployee(@RequestBody Game newGame){
-        return repository.save(newGame);
+    public Game newGame(@RequestBody Game newGame) {
+        return gameService.createGame(newGame);
     }
 
     @GetMapping("/games/{id}")
-    public Game oneEmployee(@PathVariable String id) throws Exception{
-        return repository.findById(Long.parseLong(id))
-        .orElseThrow(() -> new Exception("Erro"));
+    public Game oneGame(@PathVariable Long id) {
+        return gameService.getGameById(id);
     }
-        
-    @PutMapping(value="/games/{id}")
-    public Game updateEmployee (@PathVariable String id, @RequestBody Game updGame) {
-        return repository.findById(Long.parseLong(id))
-      .map(game -> {
-        game.setName(updGame.getName());
-        game.setOwner_name(updGame.getOwner_name());
-        return repository.save(game);
-      })
-      .orElseGet(() -> {
-        updGame.setId(Long.parseLong(id));
-        return repository.save(updGame);
-      });
+
+    @PutMapping("/games/{id}")
+    public Game updateGame(@PathVariable Long id, @RequestBody Game updGame) {
+        return gameService.updateGame(id, updGame);
     }
 
     @DeleteMapping("/games/{id}")
-    void deleteGame(@PathVariable String id) {
-        repository.deleteById(Long.parseLong(id));
-    } 
+    void deleteGame(@PathVariable Long id) {
+        gameService.deleteGame(id);
+    }
 }
