@@ -14,12 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class EmployeeController {
-    /* public static final String template = "Hello, %s!";
-    private final AtomicLong counter = new AtomicLong();
-    @GetMapping("/greeting")
-    public Greeting greeting(@RequestParam(value = "name", defaultValue = "Gus") String name) {
-        return new Greeting(counter.incrementAndGet(), String.format(template, name));
-    } */
 
     private final EmployeeRepository repository;
 
