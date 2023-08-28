@@ -1,16 +1,26 @@
 package com.example.demo.controllers;
 
-import java.util.List;
+import com.example.demo.models.Console;
 import com.example.demo.models.Game;
+import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Page;
 import com.example.demo.services.GameService;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+
+@RequestMapping("/games")
 @RestController
 public class GameController {
 
@@ -20,28 +30,43 @@ public class GameController {
         this.gameService = gameService;
     }
 
-    @GetMapping("/games")
-    public List<Game> allGames() {
-        return gameService.getAllGames();
+    @GetMapping()
+    public ResponseEntity<Page<Game>> allGames(@PageableDefault(page = 0, size = 10, sort = "id", direction = Direction.ASC) Pageable pageable) {
+        return ResponseEntity.status(HttpStatus.OK).body(gameService.getAllGames(pageable));
     }
 
-    @PostMapping("/games")
-    public Game newGame(@RequestBody Game newGame) {
-        return gameService.createGame(newGame);
+    @GetMapping("/{id}")
+    public ResponseEntity<Game> oneGame(@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(gameService.getGameById(id));
     }
 
-    @GetMapping("/games/{id}")
-    public Game oneGame(@PathVariable Long id) {
-        return gameService.getGameById(id);
+    @GetMapping("/search/{console}")
+    public ResponseEntity<Page<Game>> findGameByConsoleAndFilters(
+        @PathVariable Console console,
+        @RequestParam(required = false) String name,
+        @RequestParam(required = false) String owner,
+        @PageableDefault(page = 0, size = 10, sort = "id", direction = Direction.ASC) Pageable pageable){
+
+            var game_model = new Game();
+            game_model.setConsole_name(console);
+            game_model.setName(name);
+            game_model.setOwner_name(owner);
+
+            return ResponseEntity.status(HttpStatus.OK).body(gameService.getGameByFilter(game_model, pageable));
+        }
+
+    @PostMapping()
+    public ResponseEntity<Game> newGame(@RequestBody Game newGame) {
+        return ResponseEntity.status(HttpStatus.OK).body(gameService.createGame(newGame));
     }
 
-    @PutMapping("/games/{id}")
-    public Game updateGame(@PathVariable Long id, @RequestBody Game updGame) {
-        return gameService.updateGame(id, updGame);
+    @PutMapping("/{id}")
+    public ResponseEntity<Game> updateGame(@PathVariable Long id, @RequestBody Game updGame) {
+        return ResponseEntity.status(HttpStatus.OK).body(gameService.updateGame(id, updGame));
     }
 
-    @DeleteMapping("/games/{id}")
-    void deleteGame(@PathVariable Long id) {
-        gameService.deleteGame(id);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteGame(@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(gameService.deleteGame(id));
     }
 }
