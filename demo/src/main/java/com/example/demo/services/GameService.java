@@ -37,9 +37,9 @@ public class GameService {
         BeanUtils.copyProperties(game_example,game_model);
 
         var matcher = ExampleMatcher.matching()
-        .withMatcher("console", match -> match.exact())
-        .withMatcher("name", match -> match.startsWith())
-        .withMatcher("owner", match -> match.contains())
+        .withMatcher("console_name", match -> match.exact())
+        .withMatcher("game_name", match -> match.startsWith())
+        .withMatcher("owner_name", match -> match.contains())
         .withIgnoreCase()
         .withIgnoreNullValues();
 
