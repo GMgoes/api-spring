@@ -14,8 +14,7 @@ class LoadDatabase {
     @Bean
     CommandLineRunner initDatabase() {
         return args -> {
-            log.info("Launching Database");
-            log.info("Database initialization completed");
+            log.info("Database conection completed");
         };
     }
 }
