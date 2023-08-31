@@ -34,13 +34,17 @@ public class Game {
     @Column(name = "owner_number", length = 15)
     private String owner_number;
 
+    @Column(name = "thumbnail", length=200)
+    private String thumbnail;
+
     public Game(){}
 
-    public Game(String name, Console console_name, String owner_name, String owner_number){
+    public Game(String name, Console console_name, String owner_name, String owner_number, String thumbnail){
        this.name = name;
        this.console_name = console_name;
        this.owner_name = owner_name;
        this.owner_number = owner_number;
+       this.thumbnail = thumbnail != null? thumbnail : "";
     }
 
     public Long getId() {
@@ -83,6 +87,14 @@ public class Game {
         this.owner_number = owner_number;
     }
 
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -92,6 +104,7 @@ public class Game {
         result = prime * result + ((console_name == null) ? 0 : console_name.hashCode());
         result = prime * result + ((owner_name == null) ? 0 : owner_name.hashCode());
         result = prime * result + ((owner_number == null) ? 0 : owner_number.hashCode());
+        result = prime * result + ((thumbnail == null) ? 0 : thumbnail.hashCode());
         return result;
     }
 
@@ -114,10 +127,7 @@ public class Game {
                 return false;
         } else if (!name.equals(other.name))
             return false;
-        if (console_name == null) {
-            if (other.console_name != null)
-                return false;
-        } else if (!console_name.equals(other.console_name))
+        if (console_name != other.console_name)
             return false;
         if (owner_name == null) {
             if (other.owner_name != null)
@@ -129,6 +139,12 @@ public class Game {
                 return false;
         } else if (!owner_number.equals(other.owner_number))
             return false;
+        if (thumbnail == null) {
+            if (other.thumbnail != null)
+                return false;
+        } else if (!thumbnail.equals(other.thumbnail))
+            return false;
         return true;
     }
+
 }
