@@ -41,17 +41,19 @@ public class GameController {
         return ResponseEntity.status(HttpStatus.OK).body(gameService.getGameById(id));
     }
 
-    @GetMapping("/search/{console_name}")
+    @GetMapping("/search")
     public ResponseEntity<Page<Game>> findGameByConsoleAndFilters(
-        @PathVariable Console console_name,
+        @RequestParam(required = false) String console_name,
         @RequestParam(required = false) String game_name,
         @RequestParam(required = false) String owner_name,
         @PageableDefault(page = 0, size = 10, sort = "id", direction = Direction.ASC) Pageable pageable){
 
             var game_model = new Game();
-            game_model.setConsole_name(console_name);
+            Console console_of_enum = Console.functionGetValue(console_name);
+            game_model.setConsole_name(console_of_enum);
             game_model.setName(game_name);
             game_model.setOwner_name(owner_name);
+            System.out.println(game_model.toString());
 
             return ResponseEntity.status(HttpStatus.OK).body(gameService.getGameByFilter(game_model, pageable));
         }
