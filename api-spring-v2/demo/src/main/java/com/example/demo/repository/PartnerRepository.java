@@ -1,6 +1,9 @@
 package com.example.demo.repository;
 
-import com.example.demo.models.Employee;
+import com.example.demo.models.Partner;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface EmployeeRepository extends JpaRepository<Employee, Long>{}
+public interface PartnerRepository extends JpaRepository<Partner, Long>{
+
+    boolean existsByNameAndPhoneNumber(String name, String phoneNumber);
+}

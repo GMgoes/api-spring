@@ -1,7 +1,7 @@
 package com.example.demo.models;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.HashMap;
 
 public enum Console {
     PS3("PS3"), PS4("PS4"), PS5("PS5"), XBOX("XBOX"), XBOXONE("XBOXONE"), PC("PC");
